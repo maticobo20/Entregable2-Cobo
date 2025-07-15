@@ -1,0 +1,155 @@
+* {
+    padding: 0;
+    margin: 0;
+    text-decoration: none;   
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #d4edc9;
+    color: #114c13;
+    text-align: center;
+    padding: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+h1 {
+    color: #2d572c;
+    margin-bottom: 30px;
+}
+
+.acciones {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#buscador {
+    padding: 8px;
+    border-radius: 8px;
+    width: 60%;
+    max-width: 400px;
+    margin-bottom: 1rem;
+}
+
+#buscador:focus {
+    outline: none;
+    border: 2px solid #4CAF50;
+}
+
+#resetContadores {
+    padding: 8px 16px;
+    margin-left: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btnReproducir {
+    padding: 8px 9px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-right: 2px;
+    background-color: #60a04b;
+}
+
+.reproduciendo {
+    background-color: #00ff88;
+    color: black;
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
+
+@keyframes brillar {
+    0% { box-shadow: 0 0 0px transparent; }
+    50% { box-shadow: 0 0 15px 5px #00ff88; }
+    100% { box-shadow: 0 0 0px transparent; }
+}
+
+.btnDetener {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-left: 2px;
+    background-color: #60a04b;
+}
+
+.deteniendo {
+    animation: sacudir 0.3s ease;
+}
+
+@keyframes sacudir {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-3px); }
+    100% { transform: translateX(0); }
+}
+
+button#modoOscuroBtn {
+    background-color: #6fbf73;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+body.modo-oscuro {
+    background-color: #1b2a1b;
+    color: #d8ffd4;
+}
+
+body.modo-oscuro .card {
+    background-color: #2a3b2a;
+    border-color: #446644;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+body.modo-oscuro button#modoOscuroBtn {
+    background-color: #345e3c;
+    color: #c8facc;
+}
+
+body.modo-oscuro .card p, body.modo-oscuro .card span {
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.soundboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+}
+
+.card {
+    background-color: #fff;
+    border: 2px solid #9fc09f;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    object-position: center;
+    border-bottom: 2px solid #4a7c59;
+}
+
+.card p {
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+}

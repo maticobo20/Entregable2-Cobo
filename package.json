@@ -1,0 +1,23 @@
+{
+  "name": "simulador",
+  "version": "1.0.0",
+  "description": "Soundbar con las mejores frases de Shrek",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maticobo20/Entregable2-Cobo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maticobo20/Entregable2-Cobo/issues"
+  },
+  "homepage": "https://github.com/maticobo20/Entregable2-Cobo#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
