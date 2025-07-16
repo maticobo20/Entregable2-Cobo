@@ -1,13 +1,12 @@
 let audio;
-let tiempoInterval = null
+let tiempoInterval = null;
 let segundos = 0;
 const btnModoOscuro = document.getElementById("modoOscuroBtn");
 const buscador = document.getElementById("buscador");
 const reset = document.getElementById("resetContadores");
 const cards = document.querySelectorAll(".card");
 
-//Buscador por texto
-
+// Buscador por texto
 buscador.addEventListener("input", (evt) => {
     const valor = evt.target.value.toLowerCase();
     cards.forEach(card => {
@@ -16,29 +15,43 @@ buscador.addEventListener("input", (evt) => {
     });
 });
 
-//Reset de contadores (localStorage)
+// Reset de contadores (fetch a API)
+reset.addEventListener("click", async () => {
+    try {
+        const res = await fetch("/api/reset", { method: "POST" });
+        if (!res.ok) throw new Error("Error al resetear contadores");
+        const data = await res.json();
 
-reset.addEventListener("click", () => {
-    cards.forEach(card => {
-        const sonido = card.getAttribute("data-sound");
-        localStorage.removeItem("contador_" + sonido);
-        const contador0 = card.querySelector(".contador");
-        if (contador0) contador0.textContent = "Reproducciones: 0";
-    });
-    console.log("Contadores Reiniciados");
-    Swal.fire({
-        icon: 'success',
-        text: 'Contadores reiniciados',
-        timer: 1000,
-        showConfirmButton: false
-    });
+        cards.forEach(card => {
+            const sonido = card.getAttribute("data-sound");
+            card.querySelector(".contador").textContent = `Reproducciones: 0`;
+        });
+
+        console.log("Contadores reiniciados desde servidor");
+        Swal.fire({
+            icon: 'success',
+            text: 'Contadores reiniciados',
+            timer: 1000,
+            showConfirmButton: false
+        });
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo resetear contadores en el servidor'
+        });
+    }
 });
 
-//Mostrar contadores guardados
-
-function actualizarContador(card, sonido) {
-    const contador = JSON.parse(localStorage.getItem("contador_" + sonido)) || 0;
-    card.querySelector(".contador").textContent = `Reproducciones: ${contador}`;
+// Mostrar contadores desde API
+async function actualizarContador(card, sonido) {
+    try {
+        const res = await fetch(`/api/contador/${sonido}`);
+        const data = await res.json();
+        card.querySelector(".contador").textContent = `Reproducciones: ${data.contador}`;
+    } catch (err) {
+        console.warn("No se pudo obtener contador para", sonido);
+    }
 }
 
 cards.forEach(card => {
@@ -46,8 +59,7 @@ cards.forEach(card => {
     actualizarContador(card, sonido);
 });
 
-//Reproducir mp3
-
+// Reproducir mp3 y contar con API
 cards.forEach(card => {
     const sonido = card.getAttribute("data-sound");
     const btnReproducir = card.querySelector(".btnReproducir");
@@ -79,42 +91,47 @@ cards.forEach(card => {
                 btnReproducir.classList.remove("reproduciendo");
             }, 1000);
 
-        audio = new Audio(`sounds/${sonido}.mp3`);
+            audio = new Audio(`sounds/${sonido}.mp3`);
 
-        audio.addEventListener("ended", () => {
-            clearInterval(tiempoInterval);
-            console.log("Audio finalizado.");
-        });
-
-        audio.play().then(() => {
-                let contador = JSON.parse(localStorage.getItem("contador_" + sonido)) ?? 0;
-                contador++;
-                localStorage.setItem("contador_" + sonido, contador);
-                actualizarContador(card, sonido);
-                Swal.fire({
-                    title: `Sonando`,
-                    text: `${sonido}.mp3`,
-                    icon: `info`,
-                    toast: true,
-                    position: `top-end`,
-                    showConfirmButton: false,
-                    timer: 4000,
-                    timerProgressBar: true
-                });
-                console.log(`Reproduciendo: ${sonido}.mp3 - Reproducciones: ${contador}`)
-            }).catch((error) => {
+            audio.addEventListener("ended", () => {
                 clearInterval(tiempoInterval);
-                console.error("Error al reproducir el sonido")
-                Swal.fire({
-                    icon: `error`,
-                    title: `Error al reproducir el sonido`,
-                    text: `No se pudo reproducir: ${sonido}.mp3`
-                });
-            }).finally(() => {
-                btnReproducir.disabled = false;
+                console.log("Audio finalizado.");
             });
+
+            audio.play()
+                .then(async () => {
+                    const res = await fetch(`/api/reproducir/${sonido}`, { method: "POST" });
+                    const data = await res.json();
+                    actualizarContador(card, sonido);
+
+                    Swal.fire({
+                        title: `Sonando`,
+                        text: `${sonido}.mp3`,
+                        icon: `info`,
+                        toast: true,
+                        position: `top-end`,
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true
+                    });
+
+                    console.log(`Reproduciendo: ${sonido}.mp3 - Reproducciones: ${data.contador}`)
+                })
+                .catch((error) => {
+                    clearInterval(tiempoInterval);
+                    console.error("Error al reproducir el sonido")
+                    Swal.fire({
+                        icon: `error`,
+                        title: `Error al reproducir el sonido`,
+                        text: `No se pudo reproducir: ${sonido}.mp3`
+                    });
+                })
+                .finally(() => {
+                    btnReproducir.disabled = false;
+                });
         });
     }
+
     if (btnDetener) {
         btnDetener.addEventListener("click", () => {
             if(audio) {
@@ -148,8 +165,7 @@ cards.forEach(card => {
     }
 });
 
-//Modo Oscuro
-
+// Modo Oscuro
 btnModoOscuro.addEventListener("click", () => {
     const modoOscuro = !document.body.classList.contains("modo-oscuro");
 
