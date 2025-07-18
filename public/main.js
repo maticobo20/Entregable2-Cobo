@@ -15,7 +15,7 @@ buscador.addEventListener("input", (evt) => {
     });
 });
 
-// Reset de contadores (fetch a API)
+// Reset de contadores
 reset.addEventListener("click", async () => {
     try {
         const res = await fetch("/api/reset", { method: "POST" });
@@ -27,7 +27,6 @@ reset.addEventListener("click", async () => {
             card.querySelector(".contador").textContent = `Reproducciones: 0`;
         });
 
-        console.log("Contadores reiniciados desde servidor");
         Swal.fire({
             icon: 'success',
             text: 'Contadores reiniciados',
@@ -43,7 +42,7 @@ reset.addEventListener("click", async () => {
     }
 });
 
-// Mostrar contadores desde API
+// Mostrar contadores
 async function actualizarContador(card, sonido) {
     try {
         const res = await fetch(`/api/contador/${sonido}`);
@@ -59,7 +58,7 @@ cards.forEach(card => {
     actualizarContador(card, sonido);
 });
 
-// Reproducir mp3 y contar con API
+// Reproducir mp3
 cards.forEach(card => {
     const sonido = card.getAttribute("data-sound");
     const btnReproducir = card.querySelector(".btnReproducir");
