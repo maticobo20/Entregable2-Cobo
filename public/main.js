@@ -113,8 +113,7 @@ cards.forEach(card => {
                         timer: 4000,
                         timerProgressBar: true
                     });
-
-                    console.log(`Reproduciendo: ${sonido}.mp3 - Reproducciones: ${data.contador}`)
+                    console.log(`Reproduciendo: ${sonido}.mp3 - Reproducciones: ${data.contador}`);
                 })
                 .catch((error) => {
                     clearInterval(tiempoInterval);
