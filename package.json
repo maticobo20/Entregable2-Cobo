@@ -1,5 +1,5 @@
 {
-  "name": "simulador",
+  "name": "proyectofinal-cobo",
   "version": "1.0.0",
   "description": "Soundbar con las mejores frases de Shrek",
   "main": "server.js",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maticobo20/Entregable2-Cobo.git"
+    "url": "git+https://github.com/maticobo20/ProyectoFinal-Cobo.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/maticobo20/Entregable2-Cobo/issues"
+    "url": "https://github.com/maticobo20/ProyectoFinal-Cobo/issues"
   },
-  "homepage": "https://github.com/maticobo20/Entregable2-Cobo#readme",
+  "homepage": "https://github.com/maticobo20/ProyectoFinal-Cobo#readme",
   "dependencies": {
     "express": "^5.1.0"
   }
