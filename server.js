@@ -8,7 +8,7 @@ const PORT = 3000;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-// Ruta API para incrementar contador (via URL param)
+// Ruta API para incrementar contador
 app.post("/api/reproducir/:sonido", (req, res) => {
     const sonido = req.params.sonido;
 
