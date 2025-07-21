@@ -1,5 +1,3 @@
-let tiempoInterval = null;
-let segundos = 0;
 const btnModoOscuro = document.getElementById("modoOscuroBtn");
 const buscador = document.getElementById("buscador");
 const reset = document.getElementById("resetContadores");
